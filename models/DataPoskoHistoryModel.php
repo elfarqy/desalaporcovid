@@ -3,9 +3,9 @@
 namespace app\models;
 
 use Yii;
-use app\models\table\DataPoskoHistoryTable;
+use app\models\table\DataPoskoHistory;
 
-class DataPoskoHistoryModel extends DataPoskoHistoryTable
+class DataPoskoHistoryModel extends DataPoskoHistory
 {
 
 	public function getDataPoskoHistoryBelongsToDataPoskoModel()
@@ -15,20 +15,50 @@ class DataPoskoHistoryModel extends DataPoskoHistoryTable
 
     public function getUpdatedByText()
     {
-    	if($this->updatedByBelongsToUser)
-    	{
-	    	return implode(' - ', [$this->updatedByBelongsToUser->nama,$this->updatedByBelongsToUser->username]);
-    	}
-    	return null;
+    	$updated_by = $this->updated_by;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['DataPoskoHistoryModel',$updated_by]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+	    	if($this->updatedByBelongsToUser)
+	    	{
+		    	$returnData = implode(' - ', [$this->updatedByBelongsToUser->nama,$this->updatedByBelongsToUser->username]);
+	    	}
+	    	else
+	    	{
+	    		$returnData = null;
+	    	}
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+	    }
+        $returnData = $getCache;
+        return $returnData;
     }
 
     public function getCreatedByText()
     {
-    	if($this->createdByBelongsToUser)
-    	{
-	    	return implode(' - ', [$this->createdByBelongsToUser->nama,$this->createdByBelongsToUser->username]);
-    	}
-    	return null;
+    	$created_by = $this->created_by;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['DataPoskoHistoryModel',$created_by]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    	
+	    	if($this->createdByBelongsToUser)
+	    	{
+		    	$returnData = implode(' - ', [$this->createdByBelongsToUser->nama,$this->createdByBelongsToUser->username]);
+	    	}
+	    	else
+	    	{
+	    		$returnData = null;
+	    	}
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+	    }
+        $returnData = $getCache;
+        return $returnData;
     }
 
 	public function getCreatedByBelongsToUser()

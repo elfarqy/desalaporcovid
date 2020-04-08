@@ -3,9 +3,9 @@
 namespace app\models;
 
 use Yii;
-use app\models\table\LaporanTable;
+use app\models\table\Laporan;
 
-class LaporanModel extends LaporanTable
+class LaporanModel extends Laporan
 {
 
     // const STATUS_DELETED = 20;
@@ -16,20 +16,172 @@ class LaporanModel extends LaporanTable
 
     public function getUpdatedByText()
     {
-    	if($this->updatedByBelongsToUser)
-    	{
-	    	return implode(' - ', [$this->updatedByBelongsToUser->nama,$this->updatedByBelongsToUser->username]);
-    	}
-    	return null;
+        $updated_by = $this->updated_by;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getUpdatedByText',$updated_by]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+            if($this->updatedByBelongsToUser)
+            {
+                $returnData = implode(' - ', [$this->updatedByBelongsToUser->nama,$this->updatedByBelongsToUser->username]);
+            }
+            else
+            {
+                $returnData = null;
+            }
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+        $returnData = $getCache;
+        return $returnData;
     }
 
     public function getCreatedByText()
     {
-    	if($this->updatedByBelongsToUser)
-    	{
-	    	return implode(' - ', [$this->updatedByBelongsToUser->nama,$this->updatedByBelongsToUser->username]);
-    	}
-    	return null;
+        $created_by = $this->created_by;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getCreatedByText',$created_by]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {       
+            if($this->createdByBelongsToUser)
+            {
+                $returnData = implode(' - ', [$this->createdByBelongsToUser->nama,$this->createdByBelongsToUser->username]);
+            }
+            else
+            {
+                $returnData = null;
+            }
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getKelurahanText()
+    {
+        $kelurahan = $this->kelurahan;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getKelurahanText',$kelurahan]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {       
+            $returnData = ($this->kelurahanBelongsToKelurahanModel) ? implode(' - ', [$this->kelurahanBelongsToKelurahanModel->nama,$this->kelurahanBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama,$this->kelurahanBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->kecamatanBelongsToKabupatenModel->nama]) : null;     
+           
+                $getCache = $returnData;
+                $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getKelurahanDatangText()
+    {
+        $kelurahan_datang = $this->kelurahan_datang;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getKelurahanText',$kelurahan_datang]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {       
+            $returnData = ($this->kelurahanDatangBelongsToKelurahanModel) ? implode(' - ', [$this->kelurahanDatangBelongsToKelurahanModel->nama,$this->kelurahanDatangBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama,$this->kelurahanDatangBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->kecamatanBelongsToKabupatenModel->nama]) : null;     
+           
+                $getCache = $returnData;
+                $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getPoskoText()
+    {
+        $id_posko = $this->id_posko;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getPoskoText',$id_posko]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {       
+            $returnData = ($this->poskoBelongsToPoskoModel) ? implode(' - ', [$this->poskoBelongsToPoskoModel->nama_posko,$this->poskoBelongsToPoskoModel->poskoBelongsToKelurahanModel->nama,$this->poskoBelongsToPoskoModel->poskoBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama]) : null;  
+
+                $getCache = $returnData;
+                $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getKotaAsalText()
+    {
+        $kota_asal = $this->kota_asal;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getKotaAsalText',$kota_asal]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+            $returnData = ($this->kotaAsalBelongsToKabupatenModel) ? implode(' - ', [$this->kotaAsalBelongsToKabupatenModel->nama]) : null;
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getJenisLaporanText()
+    {
+        $jenis_laporan = $this->jenis_laporan;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getJenisLaporanText',$jenis_laporan]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+            $returnData = ($this->jenisLaporanBelongsToJenisLaporanModel) ? $this->jenisLaporanBelongsToJenisLaporanModel->nama_laporan : null;
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getIdNegaraText()
+    {
+        $id_negara = $this->id_negara;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getIdNegaraText',$id_negara]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+            $returnData = ($this->negaraBelongsToNegaraModel) ? $this->negaraBelongsToNegaraModel->nama : null;
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getLuarNegeriText()
+    {
+        switch ($this->luar_negeri) {
+            case 1:
+                return "TIDAK";
+                # code...
+                break;
+            case 2:
+                return "IYA";
+                # code...
+                break;          
+            default:
+                # code...
+                break;
+        }
     }
 
 	public function getCreatedByBelongsToUser()
@@ -41,6 +193,11 @@ class LaporanModel extends LaporanTable
 	{
 		return $this->hasOne(User::className(),['id'=>'updated_by']);
 	}
+
+    public function getNegaraBelongsToNegaraModel()
+    {
+        return $this->hasOne(NegaraModel::className(),['id'=>'id_negara']);
+    }
 
 	public function getKelurahanBelongsToKelurahanModel()
 	{
@@ -82,7 +239,17 @@ class LaporanModel extends LaporanTable
             self::STATUS_ON_PROCESS=>"SEDANG DIPROSES",
             self::STATUS_PROCESSED=>"SUDAH DIPROSES",
             self::STATUS_NOT_VALID=>"DATA TIDAK VALID",
-        ];
+        ];            
+    }
+
+    public static function getStatusUpdateList()
+    {
+        return [
+            // self::STATUS_DELETED=>"DI HAPUS",
+            // self::STATUS_WAITING=>"MENUNGGU DIPROSES",
+            self::STATUS_ON_PROCESS=>"SEDANG DIPROSES",
+            self::STATUS_NOT_VALID=>"DATA TIDAK VALID",
+        ];            
     }
 
     public function attributeLabels()
@@ -105,8 +272,8 @@ class LaporanModel extends LaporanTable
             'id_negara' => Yii::t('app', 'Negara'),
             'created_by' => Yii::t('app', 'Dibuat Oleh'),
             'updated_by' => Yii::t('app', 'Diubah Oleh'),
-            'created_time' => Yii::t('app', 'Waktu Dibuat'),
-            'updated_time' => Yii::t('app', 'Waktu Diubah'),
+            'created_at' => Yii::t('app', 'Waktu Dibuat'),
+            'updated_at' => Yii::t('app', 'Waktu Diubah'),
         ];
     }
 

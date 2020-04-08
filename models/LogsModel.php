@@ -3,9 +3,9 @@
 namespace app\models;
 
 use Yii;
-use app\models\table\LogsTable;
+use app\models\table\Logs;
 
-class LogsModel extends LogsTable
+class LogsModel extends Logs
 {
 	public static function CreateLogs($user_id,$action,$action_id,$data)
 	{
@@ -14,7 +14,7 @@ class LogsModel extends LogsTable
 		$model->action = $action;
 		$model->action_id = $action_id;
 		$model->data_serialize = serialize($data);
-		$model->created_time = date('Y-m-d H:i:s');
+		$model->created_at = date('Y-m-d H:i:s');
 		$model->save();
 	}
 

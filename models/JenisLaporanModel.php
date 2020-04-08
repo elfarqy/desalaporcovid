@@ -3,10 +3,10 @@
 namespace app\models;
 
 use Yii;
-use app\models\table\JenisLaporanTable;
+use app\models\table\JenisLaporan;
 use yii\helpers\ArrayHelper;
 
-class JenisLaporanModel extends JenisLaporanTable
+class JenisLaporanModel extends JenisLaporan
 {
 
     const STATUS_ACTIVE = 10;
@@ -29,11 +29,28 @@ class JenisLaporanModel extends JenisLaporanTable
 
     public static function getJenisLaporanList()
     {
-        $model = self::find()->all();
-        if ($model)
-        {
-            return ArrayHelper::map ($model, 'id', 'nama_laporan');
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getJenisLaporanList']);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+            $model = self::find()->all();
+            if ($model)
+            {
+                $returnData = ArrayHelper::map ($model, 'id', 'nama_laporan');
+                $getCache = $returnData;
+                $cache->set($cacheUniqueId,$getCache,60*360);
+            }
+            else
+            {
+                $returnData = [];
+            }
+
+
         }
+        $returnData = $getCache;
+        return $returnData;
+
     }
 
     public function sendLogs($action="create")

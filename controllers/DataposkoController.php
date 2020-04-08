@@ -33,6 +33,7 @@ class DataposkoController extends \app\controllers\MainController
             case \app\models\User::LEVEL_ADMIN_DESA:
             case \app\models\User::LEVEL_POSKO:
                 $id_kelurahan = \yii::$app->user->identity->kelurahan;
+
                 $dataProvider->query->andWhere([
                     'kelurahan_datang'=>$id_kelurahan,
                 ]);                        
@@ -43,10 +44,58 @@ class DataposkoController extends \app\controllers\MainController
                 # code...
                 break;
         }
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+
+        if(\yii::$app->request->get('cetak')==TRUE)
+        {
+            $username = \yii::$app->user->identity->username;
+            $kelurahan = \yii::$app->user->identity->namaKelurahan;
+            $site = \yii\helpers\Url::home(true);
+            $date = implode(', ', [\app\models\CommonHelper::getIndonesianDayName(date('D')),date('d F Y H:i:s')]);
+            $dataProvider->pagination=false;
+            $model = $dataProvider->models; 
+            // get your HTML raw content without any layouts or scripts
+            $content = $this->renderPartial('_reportAll',[
+                'model'=>$model
+            ]);
+            
+            // setup kartik\mpdf\Pdf component
+            $pdf = new Pdf([
+                // set to use core fonts only
+                'mode' => Pdf::MODE_CORE, 
+                'filename'=>"dataposko-{$kelurahan}.pdf",
+                // A4 paper format
+                'format' => Pdf::FORMAT_A4, 
+                // portrait orientation
+                'orientation' => Pdf::ORIENT_LANDSCAPE, 
+                // stream to browser inline
+                'destination' => Pdf::DEST_BROWSER, 
+                // your html content input
+                'content' => $content,  
+                // format content from your own css file if needed or use the
+                // enhanced bootstrap css built by Krajee for mPDF formatting 
+                'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+                // any css to be embedded if required
+                'cssInline' => '.kv-heading-1{font-size:18px}', 
+                 // set mPDF properties on the fly
+                'options' => ['title' => 'Detil Data Warga Pantauan'],
+                 // call mPDF methods on the fly
+                'methods' => [ 
+                    'SetHeader'=>["Dokumen dicetak oleh : @{$username}, pada: {$date} - {$site}"], 
+                    'SetFooter'=>['{PAGENO}'],
+                ]
+            ]);
+            
+            // return the pdf output as per the destination setting
+            return $pdf->render(); 
+        }
+        else
+        {
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+
     }
 
     /**
@@ -190,7 +239,7 @@ class DataposkoController extends \app\controllers\MainController
             if($checkLaporanId)
             {
                 $checkLaporanId->status = \app\models\LaporanModel::STATUS_PROCESSED;
-                $checkLaporanId->updated_time = date('Y-m-d H:i:s');
+                $checkLaporanId->updated_at = date('Y-m-d H:i:s');
                 $checkLaporanId->updated_by = \yii::$app->user->identity->id;
                 if($checkLaporanId->save())
                 {

@@ -22,13 +22,16 @@ class LaporanController extends \app\controllers\MainController
     public function actionIndex()
     {
         $searchModel = new LaporanSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         switch (\yii::$app->user->identity->userType) {
             case \app\models\User::LEVEL_ADMIN:
+                $searchModel->status = \app\models\LaporanModel::STATUS_WAITING;
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                 # code...
                 break;
             case \app\models\User::LEVEL_ADMIN_DESA:
             case \app\models\User::LEVEL_POSKO:
+                $searchModel->status = \app\models\LaporanModel::STATUS_WAITING;
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                 $id_kelurahan = \yii::$app->user->identity->kelurahan;
                 $dataProvider->query->andWhere([
                     'kelurahan_datang'=>$id_kelurahan,
@@ -36,6 +39,7 @@ class LaporanController extends \app\controllers\MainController
                 # code...
                 break;            
             default:
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                 $dataProvider->query->andWhere([
                     'id_pelapor'=>\yii::$app->user->identity->id,
                 ]);
@@ -73,7 +77,7 @@ class LaporanController extends \app\controllers\MainController
 
         $model->id_pelapor = \yii::$app->user->identity->id;
         $model->status = \app\models\form\LaporanForm::STATUS_WAITING;
-        $model->created_time = date('Y-m-d H:i:s');
+        $model->created_at = date('Y-m-d H:i:s');
         $model->created_by = \yii::$app->user->identity->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         {
@@ -98,7 +102,7 @@ class LaporanController extends \app\controllers\MainController
     {
         $model = $this->findModel($id);
 
-        $model->updated_time = date('Y-m-d H:i:s');
+        $model->updated_at = date('Y-m-d H:i:s');
         $model->updated_by = \yii::$app->user->identity->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->sendNotification("update");

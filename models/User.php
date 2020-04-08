@@ -5,9 +5,9 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-use app\models\table\UsersTable;
+use app\models\table\Users;
 
-class User extends UsersTable implements IdentityInterface 
+class User extends Users implements IdentityInterface 
 {
 
     const STATUS_DELETED = 30;
@@ -41,6 +41,42 @@ class User extends UsersTable implements IdentityInterface
             'tanggal_lahir' => Yii::t('app', 'Tanggal Lahir'),
             'tempat_lahir' => Yii::t('app', 'Tempat Lahir'),
         ];
+    }
+
+    public function getKelurahanText()
+    {
+        $kelurahan = $this->kelurahan;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getKelurahanText',$kelurahan]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {       
+            $returnData = ($this->kelurahanBelongsToKelurahanModel) ? implode(' - ', [$this->kelurahanBelongsToKelurahanModel->nama,$this->kelurahanBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama,$this->kelurahanBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->kecamatanBelongsToKabupatenModel->nama]) : null;     
+           
+                $getCache = $returnData;
+                $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getPoskoText()
+    {
+        $id_posko = $this->user_id;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getPoskoText',$id_posko]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {       
+            $returnData = ($this->idPoskoToPoskoModel) ? $this->idPoskoToPoskoModel->textPosko : null;  
+
+                $getCache = $returnData;
+                $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+
+        $returnData = $getCache;
+        return $returnData;
     }
 
     public function getLevelDetail()

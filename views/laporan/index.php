@@ -12,6 +12,34 @@ use kartik\widgets\Select2;
 $this->title = Yii::t('app', 'Laporan Saya');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+    <?php /*
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Statistik Laporan Warga <?= \yii::$app->user->identity->namaKelurahan;?></h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-padding">
+              <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="#">Total Laporan Warga<span class="pull-right text-red"> </span></a>
+                    <a href="#">Total Laporan <b>MENUNGGU DIPROSES</b><span class="pull-right text-red"> </span></a>
+                    <a href="#">Total <b>SEDANG DIPROSES</b><span class="pull-right text-red"> </span></a>
+                    <a href="#">Total <b>SUDAH DIPROSES</b><span class="pull-right text-red"> </span></a>
+                    <a href="#">Total <b>TIDAK VALID</b><span class="pull-right text-red"> </span></a>
+                </li>
+              </ul>
+            </div>
+            <!-- /.footer -->
+          </div>
+    */ ?>
+
 <div class="laporan-model-index box box-primary">
     <?php Pjax::begin(); ?>
     <div class="box-header with-border">
@@ -30,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'jenis_laporan',
                     'value' => function ($model) {
-                        return ($model->jenisLaporanBelongsToJenisLaporanModel) ? $model->jenisLaporanBelongsToJenisLaporanModel->nama_laporan : null;
+                        return $model->jenisLaporanText;
                     },
                     'filter' => \app\models\JenisLaporanModel::getJenisLaporanList(),
                     'filterInputOptions' => ['prompt' => 'Semua Jenis Laporan', 'class' => 'form-control', 'id' => null]
@@ -40,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'kelurahan',
                     'value' => function ($model) {
-                        return ($model->kelurahanBelongsToKelurahanModel) ? implode(' - ', [$model->kelurahanBelongsToKelurahanModel->nama,$model->kelurahanBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama,$model->kelurahanBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->kecamatanBelongsToKabupatenModel->nama]) : null;
+                        return $model->kelurahanText;
                     },
                     'filter' => Select2::widget([
 
@@ -81,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'kota_asal',
                     'value' => function ($model) {
-                        return ($model->kotaAsalBelongsToKabupatenModel) ? implode(' - ', [$model->kotaAsalBelongsToKabupatenModel->nama]) : null;
+                        return $model->kotaAsalText;
                     },
                     'filter' => Select2::widget([
 
@@ -119,7 +147,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'kelurahan_datang',
                     'value' => function ($model) {
-                        return ($model->kelurahanDatangBelongsToKelurahanModel) ? implode(' - ', [$model->kelurahanDatangBelongsToKelurahanModel->nama,$model->kelurahanDatangBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama,$model->kelurahanDatangBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->kecamatanBelongsToKabupatenModel->nama]) : null;
+                        return $model->kelurahanDatangText;
                     },
                     'filter' => Select2::widget([
 
@@ -159,7 +187,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'id_posko',
                     'value' => function ($model) {
-                        return ($model->poskoBelongsToPoskoModel) ? implode(' - ', [$model->poskoBelongsToPoskoModel->nama_posko,$model->poskoBelongsToPoskoModel->poskoBelongsToKelurahanModel->nama,$model->poskoBelongsToPoskoModel->poskoBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama]) : null;
+                        return $model->poskoText;
                     },
                     'filter' => Select2::widget([
 
@@ -172,7 +200,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'theme' => Select2::THEME_BOOTSTRAP,
 
                         'hideSearch' => true,
-                        'initValueText' => \app\models\KelurahanModel::getTextKelurahanById($searchModel->kelurahan),                        
+                        'initValueText' => \app\models\PoskoModel::getTextPoskoById($searchModel->kelurahan),                        
                         'options' => [
                             'placeholder' => 'Pilih Posko ...',
                         ],
@@ -218,6 +246,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 switch (\yii::$app->user->identity->userType) {
                                     case \app\models\User::LEVEL_POSKO:
                                     case \app\models\User::LEVEL_ADMIN:
+                                    case \app\models\User::LEVEL_ADMIN_DESA:
                                         return Html::a('<span class="fa fa-pencil"></span> Ubah', $url, [
                                                     'title' => Yii::t('app', 'update'),
                                                     'class'=>'btn btn-warning btn-xs modal-form',

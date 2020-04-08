@@ -3,15 +3,88 @@
 namespace app\models;
 
 use Yii;
-use app\models\table\PoskoTable;
+use app\models\table\Posko;
 use yii\helpers\ArrayHelper;
 
-class PoskoModel extends PoskoTable
+class PoskoModel extends Posko
 {
 
     const STATUS_DELETED = 20;
     const STATUS_ACTIVE = 10;
     const STATUS_SUSPENDED = 30;
+
+    public function getUpdatedByText()
+    {
+        $updated_by = $this->updated_by;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getUpdatedByText',$updated_by]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+            if($this->updatedByBelongsToUser)
+            {
+                $returnData = implode(' - ', [$this->updatedByBelongsToUser->nama,$this->updatedByBelongsToUser->username]);
+            }
+            else
+            {
+                $returnData = null;
+            }
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getCreatedByText()
+    {
+        $created_by = $this->created_by;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getCreatedByText',$created_by]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {       
+            if($this->createdByBelongsToUser)
+            {
+                $returnData = implode(' - ', [$this->createdByBelongsToUser->nama,$this->createdByBelongsToUser->username]);
+            }
+            else
+            {
+                $returnData = null;
+            }
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public function getKelurahanText()
+    {
+        $id_kelurahan = $this->id_kelurahan;
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getKelurahanText',$id_kelurahan]);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {       
+            if($model->poskoBelongsToKelurahanModel)
+            {
+                $returnData = $model->poskoBelongsToKelurahanModel->textKelurahan;
+            }
+            else
+            {
+                $returnData = null;
+            }
+           
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*360);
+        }
+
+        $returnData = $getCache;
+        return $returnData;
+    }
 
     public function getStatusDetail()
     {
@@ -100,6 +173,16 @@ class PoskoModel extends PoskoTable
 			return $id;
 		}
 	}
+
+    public function getCreatedByBelongsToUser()
+    {
+        return $this->hasOne(User::className(),['id'=>'created_by']);
+    }
+
+    public function getUpdatedByBelongsToUser()
+    {
+        return $this->hasOne(User::className(),['id'=>'updated_by']);
+    }
 
 	public function getPoskoBelongsToKelurahanModel()
 	{

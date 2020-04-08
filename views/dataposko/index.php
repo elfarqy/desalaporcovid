@@ -12,10 +12,47 @@ use kartik\widgets\Select2;
 $this->title = Yii::t('app', 'Data Pantauan Posko');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+    <?php /*
+
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Statistik Data Posko <?= \yii::$app->user->identity->namaKelurahan;?></h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-padding">
+              <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="#">Jumlah Warga ODP (Orang Dalam Pemantauan)<span class="pull-right text-red"> </span></a>
+                    <a href="#">Jumlah Warga PDP (Pasien Dalam Pemantauan)<span class="pull-right text-red"> </span></a>
+                    <a href="#">Jumlah Warga POSITIF<span class="pull-right text-red"> </span></a>
+                    <a href="#">Jumlah Warga NEGATIF<span class="pull-right text-red"> </span></a>
+                    <a href="#">Jumlah Warga SEMBUH<span class="pull-right text-red"> </span></a>
+                    <a href="#">Jumlah Warga PERGI<span class="pull-right text-red"> </span></a>
+                </li>
+              </ul>
+            </div>
+            <!-- /.footer -->
+          </div>
+    */?>
+
 <div class="laporan-model-index box box-primary">
     <?php Pjax::begin(); ?>
     <div class="box-header with-border">
-        <?= Html::a(Yii::t('app', 'Buat Data Pantauan Posko Baru'), ['create'], ['class' => 'btn btn-success btn-flat']) ?>
+        <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> Buat Data Pantauan Posko Baru'), ['create'], ['class' => 'btn btn-success btn-flat']) ?>
+        <?php if(\yii::$app->request->url=="/index.php/dataposko"):?>
+            <?= Html::a(Yii::t('app', '<i class="fa fa-print"></i> Cetak PDF'), [str_replace('index.php', '', \yii::$app->request->url).'?','cetak'=>true], ['class' => 'btn btn-primary btn-flat','data-pjax'=>0,'target'=>'__blank']) ?>
+        <?php else:?>
+            <?= Html::a(Yii::t('app', '<i class="fa fa-print"></i> Cetak PDF'), [str_replace('index.php', '', \yii::$app->request->url).'&cetak=TRUE'], ['class' => 'btn btn-primary btn-flat','data-pjax'=>0,'target'=>'__blank']) ?>
+        <?php endif;?>
+
     </div>
     <div class="box-body table-responsive no-padding">
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -30,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'jenis_laporan',
                     'value' => function ($model) {
-                        return ($model->jenisLaporanBelongsToJenisLaporanModel) ? $model->jenisLaporanBelongsToJenisLaporanModel->nama_laporan : null;
+                        return $model->jenisLaporanText;
                     },
                     'filter' => \app\models\JenisLaporanModel::getJenisLaporanList(),
                     'filterInputOptions' => ['prompt' => 'Semua Jenis Laporan', 'class' => 'form-control', 'id' => null]
@@ -90,7 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'kota_asal',
                     'value' => function ($model) {
-                        return ($model->kotaAsalBelongsToKabupatenModel) ? implode(' - ', [$model->kotaAsalBelongsToKabupatenModel->nama]) : null;
+                        return $model->kotaAsalText;
                     },
                     'filter' => Select2::widget([
 
@@ -128,7 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'kelurahan_datang',
                     'value' => function ($model) {
-                        return ($model->kelurahanDatangBelongsToKelurahanModel) ? implode(' - ', [$model->kelurahanDatangBelongsToKelurahanModel->nama,$model->kelurahanDatangBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama,$model->kelurahanDatangBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->kecamatanBelongsToKabupatenModel->nama]) : null;
+                        return $model->kelurahanDatangText;
                     },
                     'filter' => Select2::widget([
 
@@ -168,7 +205,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'id_posko',
                     'value' => function ($model) {
-                        return ($model->poskoBelongsToPoskoModel) ? implode(' - ', [$model->poskoBelongsToPoskoModel->nama_posko,$model->poskoBelongsToPoskoModel->poskoBelongsToKelurahanModel->nama,$model->poskoBelongsToPoskoModel->poskoBelongsToKelurahanModel->kelurahanBelongsToKecamatanModel->nama]) : null;
+                        return $model->poskoText;
                     },
                     'filter' => Select2::widget([
 
@@ -181,11 +218,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'theme' => Select2::THEME_BOOTSTRAP,
 
                         'hideSearch' => true,
-                        'initValueText' => \app\models\KelurahanModel::getTextKelurahanById($searchModel->kelurahan),                        
+                        'initValueText' => \app\models\PoskoModel::getTextPoskoById($searchModel->kelurahan),                        
                         'options' => [
-
-                            'placeholder' => 'Pilih Kelurahan/Desa ...',
-
+                            'placeholder' => 'Pilih Posko ...',
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
@@ -194,7 +229,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'errorLoading' => new JsExpression("function () { return 'Sedang mencari data...'; }"),
                             ],
                             'ajax' => [
-                                'url' => \yii\helpers\Url::to(['/site/getdatakelurahan']),
+                                'url' => \yii\helpers\Url::to(['/site/getdataposko']),
                                 'dataType' => 'json',
                                 'data' => new JsExpression('function(params) { return {q:params.term}; }')
                             ],
