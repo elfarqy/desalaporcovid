@@ -188,4 +188,5 @@ Want to contribute? Great!
 ### Todos
 
  - Write MORE Tests
+ - Bug Testing
 
