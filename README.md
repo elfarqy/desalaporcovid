@@ -14,105 +14,104 @@ Penjelasan singkat aplikasi ini sebagai berikut :
 # Fitur Desa Lapor Covid!
 
     Tipe Pengguna : Warga 
-    
-  [+] Pendaftaran Pengguna Baru
+- [x] Pendaftaran Pengguna Baru
   
-  [+] Login Pengguna
+- [x] Login Pengguna
   
-  [+] Laporan Warga
+- [x] Laporan Warga
   
-  [+] Notifikasi Status Perkembangan Laporan Warga
+- [x] Notifikasi Status Perkembangan Laporan Warga
   
-  [+] Halaman Daftar Laporan Saya
+- [x] Halaman Daftar Laporan Saya
   
-  [+] Mengganti Password/ Kata Sandi Sendiri
+- [x] Mengganti Password/ Kata Sandi Sendiri
   
-  [+] Logs Semua Aktifitas Pengguna  
+- [x] Logs Semua Aktifitas Pengguna  
   
   
     Tipe Pengguna : POSKO 
-  [+] Login Petugas Posko
+- [x] Login Petugas Posko
   
-  [+] Mengganti Password/ Kata Sandi Sendiri
+- [x] Mengganti Password/ Kata Sandi Sendiri
   
-  [+] Notifikasi Laporan Warga
+- [x] Notifikasi Laporan Warga
   
-  [+] Validasi Laporan Warga
+- [x] Validasi Laporan Warga
   
-  [+] Merubah Status Laporan Warga
+- [x] Merubah Status Laporan Warga
   
-  [+] Notifikasi Laporan Warga  
+- [x] Notifikasi Laporan Warga  
   
-  [+] Import/Pindah/Copy Data Dari Laporan Warga Ke Data Posko
+- [x] Import/Pindah/Copy Data Dari Laporan Warga Ke Data Posko
   
-  [+] Membuat Data Posko (Data Pantauan Warga Pendatang/Pemudik)
+- [x] Membuat Data Posko (Data Pantauan Warga Pendatang/Pemudik)
   
-  [+] Merubah Status Data Posko (Data Posko)
+- [x] Merubah Status Data Posko (Data Posko)
   
-  [+] Menambah/ Merubah Data Pantauan Harian
+- [x] Menambah/ Merubah Data Pantauan Harian
   
-  [+] Mencetak PDF Data Posko Per Desa Petugas Posko
+- [x] Mencetak PDF Data Posko Per Desa Petugas Posko
   
-  [+] Mencetak PDF Detail Data Posko Per Warga Desa Petugas Posko
+- [x] Mencetak PDF Detail Data Posko Per Warga Desa Petugas Posko
   
-  [+] Logs Semua Aktifitas Pengguna  
+- [x] Logs Semua Aktifitas Pengguna  
   
-  [ ] Statistik Data Posko 1 Desa
+- [ ] Statistik Data Posko 1 Desa
   
-  [ ] Statistik Laporan Warga 1 Desa
+- [ ] Statistik Laporan Warga 1 Desa
   
   
       Tipe Pengguna : ADMIN DESA 
-  [+] Login ADMIN DESA
+- [x] Login ADMIN DESA
   
-  [+] Mengganti Password/ Kata Sandi Sendiri
+- [x] Mengganti Password/ Kata Sandi Sendiri
   
-  [+] Notifikasi Laporan Warga
+- [x] Notifikasi Laporan Warga
   
-  [+] Validasi Laporan Warga
+- [x] Validasi Laporan Warga
   
-  [+] Merubah Status Laporan Warga
+- [x] Merubah Status Laporan Warga
   
-  [+] Notifikasi Laporan Warga  
+- [x] Notifikasi Laporan Warga  
   
-  [+] Import/Pindah/Copy Data Dari Laporan Warga Ke Data Posko
+- [x] Import/Pindah/Copy Data Dari Laporan Warga Ke Data Posko
   
-  [+] Membuat Data Posko (Data Pantauan Warga Pendatang/Pemudik)
+- [x] Membuat Data Posko (Data Pantauan Warga Pendatang/Pemudik)
   
-  [+] Merubah Status Data Posko (Data Posko)
+- [x] Merubah Status Data Posko (Data Posko)
   
-  [+] Menambah/ Merubah Data Pantauan Harian
+- [x] Menambah/ Merubah Data Pantauan Harian
   
-  [+] Mencetak PDF Data Posko Per Desa Petugas Posko
+- [x] Mencetak PDF Data Posko Per Desa Petugas Posko
   
-  [+] Mencetak PDF Detail Data Posko Per Warga Desa Petugas Posko
+- [x] Mencetak PDF Detail Data Posko Per Warga Desa Petugas Posko
   
-  [+] Merubah Status Pengguna dari Desa Yang Sama Menjadi Tipe Posko Atau Admin
+- [x] Merubah Status Pengguna dari Desa Yang Sama Menjadi Tipe Posko Atau Admin
   Desa
   
-  [+] Merubah Kata Sandi Pengguna dari Desa Yang Sama
+- [x] Merubah Kata Sandi Pengguna dari Desa Yang Sama
   
-  [+] Merubah Status Pengguna Dari Desa Yang Sama (AKTIF/DITANGGUHKAN)
+- [x] Merubah Status Pengguna Dari Desa Yang Sama (AKTIF/DITANGGUHKAN)
   
-  [+] Menghapus Data Posko
+- [x] Menghapus Data Posko
   
-  [x] Menghapus Laporan Warga
+- [x] Menghapus Laporan Warga
   
-  [x] Logs Semua Aktifitas Pengguna  
+- [x] Logs Semua Aktifitas Pengguna  
   
-  [ ] Statistik Data Posko 1 Desa
+- [ ] Statistik Data Posko 1 Desa
   
-  [ ] Statistik Laporan Warga 1 Desa
+- [ ] Statistik Laporan Warga 1 Desa
   
   
       Tipe Pengguna : PETUGAS PUSKESMAS 
-  [ ] Login PETUGAS PUSKESMAS
+- [ ] Login PETUGAS PUSKESMAS
   
-  [ ] Mengganti Password/ Kata Sandi Sendiri
+- [ ] Mengganti Password/ Kata Sandi Sendiri
   
-  [ ] Melihat Data Posko 1 Kecamatan
+- [ ] Melihat Data Posko 1 Kecamatan
   
-  [ ] Menambahkan/ Merubah Data Pantauan Harian Warga 
+- [ ] Menambahkan/ Merubah Data Pantauan Harian Warga 
   
 
 ### Tech
