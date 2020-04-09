@@ -133,17 +133,23 @@ Install the dependencies and start the server.
 ```sh
 $ git clone https://github.com/teknosuper/desalaporcovid.git
 $ composer install --ignore-platform-reqs
-$ composer update
-$ php yii migration
-import mysql data in folder data/sql
+$ php yii migrate
+$ php yii import/dependency # or if you like do manually, import sql in data.
 ```
 
-For Development environments...
+###Settings
+
+Change `YII_DEBUG` to `true` if you want to enable debug toolbar. default `false`.
+Change `YII_ENV` to `dev` if you want to develop on local machine, otherwise set it `prod` when on production mode.
 
 ```sh
 $ nano web/index.php 
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev')
+```
+duplicate `db.php` in config folder to `db-local.php`
+
+```sh
 $ nano config/db-local.php
 return [
     'class' => 'yii\db\Connection',
@@ -160,27 +166,6 @@ return [
 
 ```
 
-For production environments...
-
-```sh
-$ nano web/index.php 
-defined('YII_DEBUG') or define('YII_DEBUG', false);
-defined('YII_ENV') or define('YII_ENV', 'prod')
-$ nano config/db-local.php
-return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=desalaporcovid',
-    'username' => 'root',
-    'password' => '',
-    'charset' => 'utf8',
-
-    // Schema cache options (for production environment)
-    'enableSchemaCache' => true,
-    'schemaCacheDuration' => 3600*24,
-    'schemaCache' => 'cache',
-];
-
-```
 ### Development
 
 Want to contribute? Great! 
