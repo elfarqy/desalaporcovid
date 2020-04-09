@@ -29,7 +29,9 @@ Penjelasan singkat aplikasi ini sebagai berikut :
 - [x] Logs Semua Aktifitas Pengguna  
   
   
-    Tipe Pengguna : POSKO 
+    Tipe Pengguna : POSKO
+    
+     
 - [x] Login Petugas Posko
   
 - [x] Mengganti Password/ Kata Sandi Sendiri
