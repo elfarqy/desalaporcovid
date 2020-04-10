@@ -74,7 +74,7 @@ class DesalaporController extends Controller
 
         //jenis_laporan 
         $this->stdout("1. Jenis laporan\n");
-        $this->importFromCSV(\app\models\table\JenisLaporan::tableName(), 'jenis_laporan.csv');
+        $this->importFromCsv(\app\models\table\JenisLaporan::tableName(), 'jenis_laporan.csv');
 
         //negara
         $this->stdout("2. Negara\n");
