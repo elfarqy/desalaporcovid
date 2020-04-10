@@ -131,8 +131,6 @@ Desa Lapor Covid uses a number of open source projects to work properly:
 # Petunjuk Instalasi 
 ## Docker Compose
 
-### Mempersiapkan source
-
 - `git clone git@github.com:cekdiri/desalaporcovid.git`
 - `cd desalaporcovid`
 - `docker-compose up`
