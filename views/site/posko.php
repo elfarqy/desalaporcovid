@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	                // 'id',
 	                'nama_posko',
-	                'alamat_posko',
+	                // 'alamat_posko',
 	                [
 	                    'attribute' => 'id_kelurahan',
 	                    'value' => function ($model) {
