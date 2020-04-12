@@ -1,5 +1,5 @@
 <?php 
-    $this->title = Yii::t('app', 'Desa Lapor Covid-19');
+    $this->title = Yii::t('app', 'Selamat Datang di Aplikasi Desa Lapor Covid-19');
     $this->params['breadcrumbs'][] = $this->title;
 ?>
 
