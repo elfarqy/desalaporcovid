@@ -102,6 +102,38 @@ class PoskoModel extends Posko
         ];
     }
 
+    public static function getDesaJoined()
+    {
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getDesaJoined']);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+            $returnData = PoskoModel::find()->select('id_kelurahan')->distinct()->all();
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*5);
+        }
+        $returnData = $getCache;
+        return $returnData;
+    }
+
+    public static function getTotalDesaJoined()
+    {
+        $cache = Yii::$app->cache;
+        $cacheUniqueId = implode('-', ['getTotalDesaJoined']);
+        $getCache = $cache->get($cacheUniqueId);
+        if($getCache===FALSE)
+        {    
+            $returnData = PoskoModel::find()->select('id_kelurahan')->distinct()->count();
+
+            $getCache = $returnData;
+            $cache->set($cacheUniqueId,$getCache,60*2);
+        }
+        $returnData = $getCache;
+        return $returnData;
+    }
+
     public static function getPoskoCount()
     {
     	if(\yii::$app->user->isGuest)

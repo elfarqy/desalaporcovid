@@ -277,18 +277,28 @@ class LaporanModel extends Laporan
         ];
     }
 
-    public static function getLaporanCount()
+    public static function getLaporanCount($cache=FALSE)
     {
+
     	if(\yii::$app->user->isGuest)
     	{
 	    	return self::find()->count();    		
     	}
     	else
     	{
-    		$kelurahan_id = \yii::$app->user->identity->kelurahan;
-			$model = self::find()->where([
-				'kelurahan_datang'=>$kelurahan_id,
-			])->count();    		
+            switch (\yii::$app->user->identity->userType) {
+                case \app\models\User::LEVEL_ADMIN:
+                    return self::find()->count();           
+                    break;
+                
+                default:
+                    $kelurahan_id = \yii::$app->user->identity->kelurahan;
+                    $model = self::find()->where([
+                        'kelurahan_datang'=>$kelurahan_id,
+                    ])->count();            
+                    # code...
+                    break;
+            }
 			return $model;
     	}
     }
