@@ -9,7 +9,7 @@ use kartik\widgets\Select2;
 /* @var $searchModel app\models\form\PoskoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Daftar Posko');
+$this->title = Yii::t('app', 'Data Posko');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="posko-model-index box box-primary">
