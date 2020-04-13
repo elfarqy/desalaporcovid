@@ -1,5 +1,5 @@
 <?php 
-    $this->title = Yii::t('app', 'Desa Lapor Covid-19');
+    $this->title = Yii::t('app', 'Selamat Datang di Aplikasi Desa Lapor Covid-19');
     $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -36,7 +36,7 @@
     
     <div class="row">
       <div class="col-md-6">
-        <div class="box box-default">
+        <div class="box box-primary box-solid">
           <div class="box-header with-border">
             <i class="fa fa-video-camera"></i>
 
@@ -59,7 +59,7 @@
         <div class="col-md-6">
           <div class="box box-solid box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Sekilas Tentang Desa Lapor Covid-19</h3>
+              <h3 class="box-title"><i class="fa fa-info-circle"></i> Sekilas Tentang Desa Lapor Covid-19</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -125,7 +125,7 @@
         <div class="col-md-6">
           <div class="box box-solid box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">PERBEDAAN ODP, PDP, DAN SUSPECT VIRUS CORONA</h3>
+              <h3 class="box-title"><i class="fa fa-warning"></i> PERBEDAAN ODP, PDP, DAN SUSPECT VIRUS CORONA</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

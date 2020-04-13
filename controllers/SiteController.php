@@ -346,6 +346,39 @@ class SiteController extends \app\controllers\MainController
         return $this->render('index');
     }
 
+    public function actionPosko()
+    {
+        $searchModel = new \app\models\form\PoskoSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('posko', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionDesa()
+    {
+        $id_kelurahan = [];
+        $poskoModel = \app\models\PoskoModel::getDesaJoined();
+        if($poskoModel)
+        {
+            foreach($poskoModel as $poskoModelData)
+            {
+                $id_kelurahan[] = $poskoModelData->id_kelurahan;
+            }            
+        }
+
+        $searchModel = new \app\models\form\KelurahanSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andWhere([
+            'id_kel'=>$id_kelurahan,
+        ]);                        
+        return $this->render('desa', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Login action.
      *

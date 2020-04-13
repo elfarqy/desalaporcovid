@@ -176,10 +176,20 @@ class User extends Users implements IdentityInterface
         }
         else
         {
-            $kelurahan_id = \yii::$app->user->identity->kelurahan;
-            $model = self::find()->where([
-                'kelurahan'=>$kelurahan_id,
-            ])->count();            
+            switch (\yii::$app->user->identity->userType) {
+                case \app\models\User::LEVEL_ADMIN:
+                    return self::find()->count();           
+                    break;
+                
+                default:
+                    $kelurahan_id = \yii::$app->user->identity->kelurahan;
+                    $model = self::find()->where([
+                        'kelurahan'=>$kelurahan_id,
+                    ])->count();            
+                    # code...
+                    break;
+            }
+
             return $model;
         }
     }
